@@ -1,7 +1,7 @@
 package project;
 
 public class Carta {
-    private String seme;
+    private final String seme;
     private final String valore;
     private final double punti;
     

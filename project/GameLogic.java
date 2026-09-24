@@ -86,8 +86,8 @@ public class GameLogic {
     public String determinaVincitore() {
         if (!partitaFinita) return "Partita in corso";
         
-        double punteggioGiocatore = giocatore.calcolaPunteggio(valoreReDiDenariGiocatore);
-        double punteggioBanco = banco.calcolaPunteggio(valoreReDiDenariBanco);
+        final double punteggioGiocatore = giocatore.calcolaPunteggio(valoreReDiDenariGiocatore);
+        final double punteggioBanco = banco.calcolaPunteggio(valoreReDiDenariBanco);
         
         if (giocatore.haSballato(valoreReDiDenariGiocatore))
         	return "Banco vince! Hai sballato.";

@@ -38,7 +38,7 @@ public class GameGUI extends JFrame {
     
     private void inizializzaComponenti() {
         // Panel superiore con informazioni
-        JPanel panelInfo = new JPanel(new GridLayout(1, 3, 10, 0));
+        final JPanel panelInfo = new JPanel(new GridLayout(1, 3, 10, 0));
         panelInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         labelViteGiocatore = new JLabel("Tue Vite: 3", SwingConstants.CENTER);
@@ -57,11 +57,11 @@ public class GameGUI extends JFrame {
         panelInfo.add(labelViteBanco);
         
         // Panel centrale con le carte
-        JPanel panelCentrale = new JPanel(new GridLayout(2, 1, 10, 10));
+        final JPanel panelCentrale = new JPanel(new GridLayout(2, 1, 10, 10));
         panelCentrale.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         // Sezione giocatore
-        JPanel sezioneggiocatore = new JPanel(new BorderLayout());
+        final JPanel sezioneggiocatore = new JPanel(new BorderLayout());
         sezioneggiocatore.setBorder(BorderFactory.createTitledBorder("Le tue carte"));
         
         labelPunteggioGiocatore = new JLabel("Punteggio: 0", SwingConstants.CENTER);
@@ -74,7 +74,7 @@ public class GameGUI extends JFrame {
         sezioneggiocatore.add(panelGiocatore, BorderLayout.CENTER);
         
         // Sezione banco
-        JPanel sezioneBanco = new JPanel(new BorderLayout());
+        final JPanel sezioneBanco = new JPanel(new BorderLayout());
         sezioneBanco.setBorder(BorderFactory.createTitledBorder("Carte del Banco"));
         
         labelPunteggioBanco = new JLabel("Punteggio: 0", SwingConstants.CENTER);
@@ -90,7 +90,7 @@ public class GameGUI extends JFrame {
         panelCentrale.add(sezioneBanco);
         
         // Panel inferiore con pulsanti
-        JPanel panelPulsanti = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        final JPanel panelPulsanti = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelPulsanti.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         btnCarta = new JButton("Carta");
@@ -139,17 +139,17 @@ public class GameGUI extends JFrame {
     }
     
     private void mostraDialogoReDiDenari() {
-        double punteggioSenzaRe = game.getGiocatore().calcolaPunteggioSenzaReDiDenari();
+        final double punteggioSenzaRe = game.getGiocatore().calcolaPunteggioSenzaReDiDenari();
         
         // Crea array: 0.5 oppure valori interi (1, 2, 3, 4, 5, 6, 7)
-        String[] opzioni = {"0.5", "1", "2", "3", "4", "5", "6", "7"};
+        final String[] opzioni = {"0.5", "1", "2", "3", "4", "5", "6", "7"};
         
         String messaggio = "Hai pescato il Re di Denari!\n" +
                           "Punteggio attuale (senza Re): " + formatPunteggio(punteggioSenzaRe) + "\n" +
                           "Scegli il valore del Re di Denari:\n" +
                           "(Puoi scegliere 0.5 oppure un valore intero da 1 a 7)";
         
-        String scelta = (String) JOptionPane.showInputDialog(
+        final String scelta = (String) JOptionPane.showInputDialog(
             this,
             messaggio,
             "Re di Denari",
@@ -160,7 +160,7 @@ public class GameGUI extends JFrame {
         );
         
         if (scelta != null) {
-            double valore = Double.parseDouble(scelta);
+            final double valore = Double.parseDouble(scelta);
             game.setValoreReDiDenariGiocatore(valore);
         } else {
             // Se l'utente chiude il dialogo, imposta 0.5 come default
@@ -185,7 +185,7 @@ public class GameGUI extends JFrame {
                 messaggio = "Il banco ha finito le vite! Hai vinto! Vuoi ricominciare da capo?";
             }
             
-            int risposta = JOptionPane.showConfirmDialog(this, 
+            final int risposta = JOptionPane.showConfirmDialog(this, 
                 messaggio, 
                 "Game Over", 
                 JOptionPane.YES_NO_OPTION);
@@ -216,9 +216,9 @@ public class GameGUI extends JFrame {
         }
         
         // Mostra punteggio giocatore
-        double punteggioGiocatore = game.getGiocatore().calcolaPunteggio(game.getValoreReDiDenariGiocatore());
+        final double punteggioGiocatore = game.getGiocatore().calcolaPunteggio(game.getValoreReDiDenariGiocatore());
         if (game.getGiocatore().haReDiDenari() && game.getValoreReDiDenariGiocatore() == -1) {
-            double senzaRe = game.getGiocatore().calcolaPunteggioSenzaReDiDenari();
+            final double senzaRe = game.getGiocatore().calcolaPunteggioSenzaReDiDenari();
             labelPunteggioGiocatore.setText("Punteggio: " + formatPunteggio(senzaRe) + " + Re di Denari (?)");
         } else {
             labelPunteggioGiocatore.setText("Punteggio: " + formatPunteggio(punteggioGiocatore));
@@ -230,7 +230,7 @@ public class GameGUI extends JFrame {
             for (Carta carta : game.getBanco().getMano()) {
                 panelBanco.add(creaPanelCarta(carta, false));
             }
-            double punteggioBanco = game.getBanco().calcolaPunteggio(game.getValoreReDiDenariBanco());
+            final double punteggioBanco = game.getBanco().calcolaPunteggio(game.getValoreReDiDenariBanco());
             labelPunteggioBanco.setText("Punteggio: " + formatPunteggio(punteggioBanco));
         } else {
             labelPunteggioBanco.setText("Punteggio: ?");
@@ -249,15 +249,15 @@ public class GameGUI extends JFrame {
     }
     
     private JPanel creaPanelCarta(Carta carta, boolean isGiocatore) {
-        JPanel panelCarta = new JPanel(new BorderLayout());
+        final JPanel panelCarta = new JPanel(new BorderLayout());
         panelCarta.setPreferredSize(new Dimension(100, 140));
         panelCarta.setBackground(Color.WHITE);
         panelCarta.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         
-        JLabel labelValore = new JLabel(carta.getValore(), SwingConstants.CENTER);
+        final JLabel labelValore = new JLabel(carta.getValore(), SwingConstants.CENTER);
         labelValore.setFont(new Font("Arial", Font.BOLD, 20));
         
-        JLabel labelSeme = new JLabel(carta.getSeme(), SwingConstants.CENTER);
+        final JLabel labelSeme = new JLabel(carta.getSeme(), SwingConstants.CENTER);
         labelSeme.setFont(new Font("Arial", Font.PLAIN, 14));
         
         String puntiText;
@@ -273,7 +273,7 @@ public class GameGUI extends JFrame {
             puntiText = formatPunteggio(carta.getPunti());
         }
         
-        JLabel labelPunti = new JLabel(puntiText, SwingConstants.CENTER);
+        final JLabel labelPunti = new JLabel(puntiText, SwingConstants.CENTER);
         labelPunti.setFont(new Font("Arial", Font.ITALIC, 12));
         labelPunti.setForeground(Color.BLUE);
         
@@ -293,7 +293,7 @@ public class GameGUI extends JFrame {
     }
     
     private void mostraRisultato() {
-        String risultato = game.determinaVincitore();
+        final String risultato = game.determinaVincitore();
         labelMessaggio.setText(risultato);
         
         if (game.isGameOver()) {

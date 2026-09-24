@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Giocatore {
-    private List<Carta> mano;
-    private String nome;
-    private boolean isBanco;
+    private final List<Carta> mano;
+    private final String nome;
+    private final boolean isBanco;
     
     public Giocatore(String nome, boolean isBanco) {
         this.nome = nome;
