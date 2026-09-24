@@ -2,9 +2,9 @@ package project;
 
 
 public class GameLogic {
-    private Mazzo mazzo;
-    private Giocatore giocatore;
-    private Giocatore banco;
+    private final Mazzo mazzo;
+    private final Giocatore giocatore;
+    private final Giocatore banco;
     private int viteGiocatore;
     private int viteBanco;
     private boolean turnoGiocatoreFinito;
@@ -12,7 +12,7 @@ public class GameLogic {
     private double valoreReDiDenariGiocatore;
     private double valoreReDiDenariBanco;
     
-    private StrategiaBanco strategiaBanco;
+    private final StrategiaBanco strategiaBanco;
     
     public GameLogic() {
         mazzo = Mazzo.getInstance();
@@ -75,7 +75,7 @@ public class GameLogic {
         }
         
         partitaFinita = true;
-        String risultato = determinaVincitore();
+        final String risultato = determinaVincitore();
         if (risultato.contains("Banco vince")) {
             viteGiocatore--;
         } else if (risultato.contains("Hai vinto")) {

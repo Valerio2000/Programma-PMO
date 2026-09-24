@@ -2,8 +2,8 @@ package project;
 
 public class Carta {
     private String seme;
-    private String valore;
-    private double punti;
+    private final String valore;
+    private final double punti;
     
     public Carta(String seme, String valore, double punti) {
         this.seme = seme;
