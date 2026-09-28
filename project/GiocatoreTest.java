@@ -7,7 +7,7 @@ public class GiocatoreTest {
 
     @Test
     public void testCalcoloPunteggioSballato() {
-        Giocatore g = new Giocatore("Test", false);
+        Giocatore g = new Umano("Test");
         g.aggiungiCarta(new Carta("Coppe", "7", 7));
         g.aggiungiCarta(new Carta("Spade", "2", 2));
         

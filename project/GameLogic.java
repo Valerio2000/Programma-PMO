@@ -1,10 +1,9 @@
 package project;
 
-
 public class GameLogic {
     private final Mazzo mazzo;
-    private final Giocatore giocatore;
-    private final Giocatore banco;
+    private final Umano giocatore1;
+    private final Banco banco;
     private int viteGiocatore;
     private int viteBanco;
     private boolean turnoGiocatoreFinito;
@@ -12,13 +11,13 @@ public class GameLogic {
     private double valoreReDiDenariGiocatore;
     private double valoreReDiDenariBanco;
     
-    private final StrategiaBanco strategiaBanco;
+    //private final StrategiaBanco strategiaBanco;
     
     public GameLogic() {
         mazzo = Mazzo.getInstance();
-        giocatore = new Giocatore("Giocatore", false);
-        banco = new Giocatore("Banco", true);
-        strategiaBanco = new StrategiaBancoSemplice();
+        //strategiaBanco = new StrategiaBancoSemplice();
+        giocatore1 = new Umano("Giocatore1");
+        banco = new Banco("Banco", new StrategiaBancoSemplice());
         viteGiocatore = 3;
         viteBanco = 3;
         turnoGiocatoreFinito = false;
@@ -29,19 +28,19 @@ public class GameLogic {
     
     public void nuovaPartita() {
         mazzo.reset();
-        giocatore.svuotaMano();
+        giocatore1.svuotaMano();
         banco.svuotaMano();
         turnoGiocatoreFinito = false;
         partitaFinita = false;
         valoreReDiDenariGiocatore = -1;
         valoreReDiDenariBanco = -1;
-        giocatore.aggiungiCarta(mazzo.pescaCarta());
+        giocatore1.aggiungiCarta(mazzo.pescaCarta());
     }
     
     public void giocatorePescaCarta() {
         if (!turnoGiocatoreFinito && !partitaFinita) {
-            giocatore.aggiungiCarta(mazzo.pescaCarta());
-            if (giocatore.haSballato(valoreReDiDenariGiocatore)) {
+        	giocatore1.aggiungiCarta(mazzo.pescaCarta());
+            if (giocatore1.haSballato(valoreReDiDenariGiocatore)) {
                 turnoGiocatoreFinito = true;
                 partitaFinita = true;
                 viteGiocatore--;
@@ -57,25 +56,25 @@ public class GameLogic {
     }
     
     private void giocaBanco() {
-        double punteggioGiocatore = giocatore.calcolaPunteggio(valoreReDiDenariGiocatore);
-        
+        final double punteggioGiocatore = giocatore1.calcolaPunteggio(valoreReDiDenariGiocatore);
+
         while (true) {
             double punteggioBanco = banco.calcolaPunteggio(valoreReDiDenariBanco);
-            
+
             if (banco.haReDiDenari() && valoreReDiDenariBanco == -1) {
-                valoreReDiDenariBanco = strategiaBanco.calcolaValoreOttimaleReDiDenari(banco.calcolaPunteggioSenzaReDiDenari(), punteggioGiocatore);
+                valoreReDiDenariBanco = banco.calcolaValoreOttimaleReDiDenari(banco.calcolaPunteggioSenzaReDiDenari(), punteggioGiocatore);
                 punteggioBanco = banco.calcolaPunteggio(valoreReDiDenariBanco);
             }
-            
-            if (!strategiaBanco.devePescare(punteggioBanco, punteggioGiocatore, banco.haSballato(valoreReDiDenariBanco))) {
+
+            if (!banco.devePescare(punteggioBanco, punteggioGiocatore, banco.haSballato(valoreReDiDenariBanco))) {
                 break;
             }
-            
             banco.aggiungiCarta(mazzo.pescaCarta());
         }
-        
+
         partitaFinita = true;
         final String risultato = determinaVincitore();
+
         if (risultato.contains("Banco vince")) {
             viteGiocatore--;
         } else if (risultato.contains("Hai vinto")) {
@@ -86,10 +85,10 @@ public class GameLogic {
     public String determinaVincitore() {
         if (!partitaFinita) return "Partita in corso";
         
-        final double punteggioGiocatore = giocatore.calcolaPunteggio(valoreReDiDenariGiocatore);
+        final double punteggioGiocatore = giocatore1.calcolaPunteggio(valoreReDiDenariGiocatore);
         final double punteggioBanco = banco.calcolaPunteggio(valoreReDiDenariBanco);
         
-        if (giocatore.haSballato(valoreReDiDenariGiocatore))
+        if (giocatore1.haSballato(valoreReDiDenariGiocatore))
         	return "Banco vince! Hai sballato.";
         if (banco.haSballato(valoreReDiDenariBanco))
         	return "Hai vinto! Il banco ha sballato.";
@@ -101,7 +100,7 @@ public class GameLogic {
     }
     
     public Giocatore getGiocatore() {
-    	return giocatore;
+    	return giocatore1;
     	}
     
     public Giocatore getBanco() {
