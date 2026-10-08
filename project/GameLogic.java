@@ -10,7 +10,7 @@ public class GameLogic {
     private boolean partitaFinita;
     private double valoreReDiDenariGiocatore;
     private double valoreReDiDenariBanco;
-    
+    private boolean doubleActived;
     //private final StrategiaBanco strategiaBanco;
     
     public GameLogic() {
@@ -18,12 +18,13 @@ public class GameLogic {
         //strategiaBanco = new StrategiaBancoSemplice();
         giocatore1 = new Umano("Giocatore1");
         banco = new Banco("Banco", new StrategiaBancoSemplice());
-        viteGiocatore = 3;
-        viteBanco = 3;
+        viteGiocatore = 5;
+        viteBanco = 5;
         turnoGiocatoreFinito = false;
         partitaFinita = false;
         valoreReDiDenariGiocatore = -1;
         valoreReDiDenariBanco = -1;
+        doubleActived = false;
     }
     
     public void nuovaPartita() {
@@ -43,16 +44,25 @@ public class GameLogic {
             if (giocatore1.haSballato(valoreReDiDenariGiocatore)) {
                 turnoGiocatoreFinito = true;
                 partitaFinita = true;
-                viteGiocatore--;
+                //viteGiocatore--;
+                if (doubleActived) {
+                    viteGiocatore -= 2;
+                } else {
+                    viteGiocatore--;
+                }
             }
         }
     }
-    
+     
     public void giocatoreStai() {
         if (!turnoGiocatoreFinito && !partitaFinita) {
             turnoGiocatoreFinito = true;
             giocaBanco();
         }
+    }
+    
+    public void umanoRaddoppia() {
+    	doubleActived = true;
     }
     
     private void giocaBanco() {
@@ -74,16 +84,25 @@ public class GameLogic {
 
         partitaFinita = true;
         final String risultato = determinaVincitore();
-
+        
         if (risultato.contains("Banco vince")) {
-            viteGiocatore--;
+            if (doubleActived) {
+                viteGiocatore -= 2;
+            } else {
+                viteGiocatore--;
+            }
         } else if (risultato.contains("Hai vinto")) {
             viteBanco--;
+            if (doubleActived == true) {
+            	viteGiocatore++;
+            }
         }
+        doubleActived = false;
     }
     
     public String determinaVincitore() {
-        if (!partitaFinita) return "Partita in corso";
+        if (!partitaFinita) 
+        	return "Partita in corso";
         
         final double punteggioGiocatore = giocatore1.calcolaPunteggio(valoreReDiDenariGiocatore);
         final double punteggioBanco = banco.calcolaPunteggio(valoreReDiDenariBanco);
@@ -101,41 +120,41 @@ public class GameLogic {
     
     public Giocatore getGiocatore() {
     	return giocatore1;
-    	}
+    }
     
     public Giocatore getBanco() {
     	return banco; 
-    	}
+    }
     
     public int getViteGiocatore(){
     	return viteGiocatore;
-    	}
+    }
     
     public int getViteBanco() {
     	return viteBanco;
-    	}
+    }
     
     public boolean isTurnoGiocatoreFinito() {
     	return turnoGiocatoreFinito;
-    	}
+    }
     
     public boolean isPartitaFinita() {
     	return partitaFinita;
-    	}
+    }
     
     public boolean isGameOver() {
     	return viteGiocatore <= 0 || viteBanco <= 0;
-    	}
+    }
     
     public void setValoreReDiDenariGiocatore(double valore) {
     	this.valoreReDiDenariGiocatore = valore;
-    	}
+    }
     
     public double getValoreReDiDenariGiocatore() {
     	return valoreReDiDenariGiocatore;
-    	}
+    }
     
     public double getValoreReDiDenariBanco() {
     	return valoreReDiDenariBanco;
-    	}
+    }
 }

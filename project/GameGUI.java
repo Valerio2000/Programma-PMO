@@ -19,6 +19,7 @@ public class GameGUI extends JFrame {
     private JButton btnCarta;
     private JButton btnStai;
     private JButton btnNuovaPartita;
+    private JButton btnRaddoppio;
     
     public GameGUI() {
         game = new GameLogic();
@@ -93,24 +94,29 @@ public class GameGUI extends JFrame {
         final JPanel panelPulsanti = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelPulsanti.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
+        btnRaddoppio = new JButton("X2");
+        btnRaddoppio.setFont(new Font("Arial", Font.BOLD, 14));
+        btnRaddoppio.setFocusPainted(false);
+        btnRaddoppio.setPreferredSize(new Dimension(60, 30));
+        btnRaddoppio.setBackground(Color.RED);
+        btnRaddoppio.addActionListener(e -> raddoppia());
+        
         btnCarta = new JButton("Carta");
         btnCarta.setFont(new Font("Arial", Font.BOLD, 16));
         btnCarta.setPreferredSize(new Dimension(120, 40));
-        // LAMBDA EXPRESSION
         btnCarta.addActionListener(e -> pescaCarta());
         
         btnStai = new JButton("Stai");
         btnStai.setFont(new Font("Arial", Font.BOLD, 16));
         btnStai.setPreferredSize(new Dimension(120, 40));
-        // LAMBDA EXPRESSION
         btnStai.addActionListener(e -> stai());
         
         btnNuovaPartita = new JButton("Nuova Partita");
         btnNuovaPartita.setFont(new Font("Arial", Font.BOLD, 16));
         btnNuovaPartita.setPreferredSize(new Dimension(150, 40));
-        // LAMBDA EXPRESSION
         btnNuovaPartita.addActionListener(e -> nuovaPartita());
         
+        panelPulsanti.add(btnRaddoppio);
         panelPulsanti.add(btnCarta);
         panelPulsanti.add(btnStai);
         panelPulsanti.add(btnNuovaPartita);
@@ -120,10 +126,11 @@ public class GameGUI extends JFrame {
         add(panelCentrale, BorderLayout.CENTER);
         add(panelPulsanti, BorderLayout.SOUTH);
     }
-    
-    private void pescaCarta() {
+
+	private void pescaCarta() {
         if (!game.isPartitaFinita() && !game.isGameOver()) {
             game.giocatorePescaCarta();
+            btnRaddoppio.setEnabled(false);
             
             // Controlla se il giocatore ha pescato il Re di Denari
             if (game.getGiocatore().haReDiDenari() && game.getValoreReDiDenariGiocatore() == -1) {
@@ -176,6 +183,14 @@ public class GameGUI extends JFrame {
         }
     }
     
+    private void raddoppia() {
+    	if (!game.isPartitaFinita() && !game.isGameOver()) {
+    		game.umanoRaddoppia();
+    		aggiornaInterfaccia();
+            btnRaddoppio.setEnabled(false);
+    	}
+	}
+    
     private void nuovaPartita() {
         if (game.isGameOver()) {
             String messaggio;
@@ -202,6 +217,7 @@ public class GameGUI extends JFrame {
         labelMessaggio.setText("Buona fortuna!");
         btnCarta.setEnabled(true);
         btnStai.setEnabled(true);
+        btnRaddoppio.setEnabled(true);
     }
     
     private void aggiornaInterfaccia() {
@@ -240,6 +256,7 @@ public class GameGUI extends JFrame {
         if (game.isPartitaFinita() || game.isGameOver()) {
             btnCarta.setEnabled(false);
             btnStai.setEnabled(false);
+            btnRaddoppio.setEnabled(false);
         }
         
         panelGiocatore.revalidate();
